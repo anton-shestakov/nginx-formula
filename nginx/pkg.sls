@@ -51,28 +51,6 @@ nginx_official_repo:
     - watch_in:
       - pkg: nginx_install
 
-   {%- if grains.os not in ('Debian',) %}
-       ## applies to Ubuntu and derivatives only #}
-nginx_ppa_repo:
-  pkgrepo:
-    {%- if from_ppa %}
-    - managed
-    {%- else %}
-    - absent
-    {%- endif %}
-    {% if salt['grains.get']('os') == 'Ubuntu' %}
-    - ppa: nginx/{{ nginx.ppa_version }}
-    {% else %}
-    - name: deb http://ppa.launchpad.net/nginx/{{ nginx.ppa_version }}/ubuntu {{ grains['oscodename'] }} main
-    - keyid: C300EE8C
-    - keyserver: keyserver.ubuntu.com
-    {% endif %}
-    - require_in:
-      - pkg: nginx_install
-    - watch_in:
-      - pkg: nginx_install
-   {%- endif %}
-
 nginx_phusionpassenger_repo:
   pkgrepo:
     {%- if from_phusionpassenger %}
